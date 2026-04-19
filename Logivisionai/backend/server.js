@@ -35,11 +35,12 @@ const server = http.createServer(app);
 // Security middleware
 app.use(helmet());
 
-// Rate limiting for login route
 const loginLimiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX) || 5, // limit each IP to 5 requests per windowMs
-  message: "Too many login attempts, please try again after 15 minutes",
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 👈 Change 5 to 100 for now
+  message: {
+    error: "Too many login attempts, please try again after 15 minutes",
+  }, // 👈 Wrap message in an object
   standardHeaders: true,
   legacyHeaders: false,
 });
